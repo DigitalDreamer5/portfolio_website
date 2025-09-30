@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kashish Valecha - BTech Computer Science Student and Aspiring Developer">
+    <title>Kashish Valecha | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/png" href="profile-image.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Portfolio Builder Styles -->
+    <style>
+        .create-portfolio-btn {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1500;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        .create-portfolio-btn:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .portfolio-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .portfolio-modal-overlay.active {
+            display: flex;
+        }
+
+        .portfolio-modal-container {
+            background: linear-gradient(135deg, #1e1e2e 0%, #2a2a4a 100%);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .portfolio-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .portfolio-form-step {
+            display: none;
+        }
+
+        .portfolio-form-step.active {
+            display: block;
+        }
+
+        .portfolio-modal-container h2 {
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 28px;
+        }
+
+        .portfolio-step-subtitle {
+            color: #999;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .portfolio-form-group {
+            margin-bottom: 25px;
+        }
+
+        .portfolio-modal-container label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .portfolio-modal-container input, 
+        .portfolio-modal-container textarea, 
+        .portfolio-modal-container select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-modal-container input:focus, 
+        .portfolio-modal-container textarea:focus, 
+        .portfolio-modal-container select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .portfolio-modal-container textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .portfolio-domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .portfolio-domain-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-domain-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .portfolio-domain-card.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .portfolio-domain-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .portfolio-skills-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .portfolio-skills-input-container input {
+            flex: 1;
+        }
+
+        .portfolio-add-btn {
+            padding: 12px 20px;
+            background: #667eea;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-add-btn:hover {
+            background: #764ba2;
+        }
+
+        .portfolio-file-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        .portfolio-file-input:hover {
+            border-color: var(--brand-primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .portfolio-help-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .portfolio-cert-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--brand-primary);
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .portfolio-item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .portfolio-list-item {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .portfolio-remove-btn {
+            cursor: pointer;
+            color: #ff6b6b;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .portfolio-project-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 3px solid #667eea;
+        }
+
+        .portfolio-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .portfolio-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .portfolio-form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .portfolio-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .portfolio-btn-prev {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .portfolio-btn-next, .portfolio-btn-create {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .portfolio-color-themes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+        }
+
+        .portfolio-color-theme {
+            height: 60px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-color-theme.selected {
+            border-color: white;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .portfolio-theme-dark { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+        .portfolio-theme-blue { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .portfolio-theme-green { background: linear-gradient(135deg, #56ab2f, #a8e063); }
+        .portfolio-theme-orange { background: linear-gradient(135deg, #f46b45, #eea849); }
+        .portfolio-theme-pink { background: linear-gradient(135deg, #ee9ca7, #ffdde1); }
+
+        .portfolio-help-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .portfolio-add-more-btn {
+            background: rgba(102, 126, 234, 0.3);
+            border: 2px dashed rgba(102, 126, 234, 0.5);
+            color: #667eea;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .create-portfolio-btn {
+                right: 15px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .portfolio-modal-container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .portfolio-domain-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Portfolio Builder Button -->
+    <button class="create-portfolio-btn" onclick="openPortfolioModal()">
+        Create Your Portfolio
+    </button>
+
+    <!-- Portfolio Builder Modal -->
+    <div class="portfolio-modal-overlay" id="portfolioModalOverlay" onclick="closePortfolioModalOnOverlay(event)">
+        <div class="portfolio-modal-container">
+            <button class="portfolio-close-btn" onclick="closePortfolioModal()">×</button>
+            
+            <div class="portfolio-progress-bar">
+                <div class="portfolio-progress-fill" id="portfolioProgressFill" style="width: 12.5%"></div>
+            </div>
+
+            <form id="portfolioBuilderForm">
+                <!-- Step 1: Basic Info -->
+                <div class="portfolio-form-step active" data-step="1">
+                    <h2>Let's Start</h2>
+                    <p class="portfolio-step-subtitle">Tell us about yourself</p>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="portfolioFullName" required placeholder="John Doe">
+                    </div>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Email *</label>
+                        <input type="email" id="portfolioEmail" required placeholder="john@example.com">
+                    </div>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Professional Title *</label>
+                        <input type="text" id="portfolioTitle" required placeholder="e.g., Full Stack Developer, UI/UX Designer">
+                    </div>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Profile Image URL (optional)</label>
+                        <input type="url" id="portfolioProfileImage" placeholder="https://your-image-url.com/image.jpg">
+                        <p class="portfolio-help-text">Use a service like Imgur or direct image URL</p>
+                    </div>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Professional Bio</label>
+                        <textarea id="portfolioBio" placeholder="Write a compelling bio about your professional journey, expertise, and what drives you..." rows="4"></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 2: Domain -->
+                <div class="portfolio-form-step" data-step="2">
+                    <h2>Choose Your Domain</h2>
+                    <p class="portfolio-step-subtitle">Select your professional field</p>
+                    
+                    <div class="portfolio-domain-grid">
+                        <div class="portfolio-domain-card" onclick="selectPortfolioDomain('tech', this)">
+                            <div class="portfolio-domain-icon">💻</div>
+                            <div>Tech/Developer</div>
+                        </div>
+                        <div class="portfolio-domain-card" onclick="selectPortfolioDomain('design', this)">
+                            <div class="portfolio-domain-icon">🎨</div>
+                            <div>Designer</div>
+                        </div>
+                        <div class="portfolio-domain-card" onclick="selectPortfolioDomain('law', this)">
+                            <div class="portfolio-domain-icon">⚖️</div>
+                            <div>Legal</div>
+                        </div>
+                        <div class="portfolio-domain-card" onclick="selectPortfolioDomain('business', this)">
+                            <div class="portfolio-domain-icon">💼</div>
+                            <div>Business</div>
+                        </div>
+                        <div class="portfolio-domain-card" onclick="selectPortfolioDomain('creative', this)">
+                            <div class="portfolio-domain-icon">🎭</div>
+                            <div>Creative/Arts</div>
+                        </div>
+                        <div class="portfolio-domain-card" onclick="selectPortfolioDomain('other', this)">
+                            <div class="portfolio-domain-icon">✨</div>
+                            <div>Other</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="portfolioSelectedDomain">
+                    
+                    <div class="portfolio-form-group">
+                        <label>Years of Experience *</label>
+                        <select id="portfolioExperience" required>
+                            <option value="">Select...</option>
+                            <option value="0-1">0-1 years (Entry Level)</option>
+                            <option value="1-3">1-3 years (Junior)</option>
+                            <option value="3-5">3-5 years (Mid-Level)</option>
+                            <option value="5-10">5-10 years (Senior)</option>
+                            <option value="10+">10+ years (Expert)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Step 3: Skills -->
+                <div class="portfolio-form-step" data-step="3">
+                    <h2>Your Skills</h2>
+                    <p class="portfolio-step-subtitle">Add your technical and professional skills</p>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Add Skills</label>
+                        <div class="portfolio-skills-input-container">
+                            <input type="text" id="portfolioSkillInput" placeholder="e.g., JavaScript, Python, Adobe XD">
+                            <button type="button" class="portfolio-add-btn" onclick="addPortfolioSkill()">Add</button>
+                        </div>
+                        <div class="portfolio-item-list" id="portfolioSkillsList"></div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Projects -->
+                <div class="portfolio-form-step" data-step="4">
+                    <h2>Your Projects</h2>
+                    <p class="portfolio-step-subtitle">Showcase your best work</p>
+                    
+                    <div id="portfolioProjectsContainer">
+                        <div class="portfolio-project-card">
+                            <div class="portfolio-form-group">
+                                <label>Project Name *</label>
+                                <input type="text" class="portfolio-project-name" placeholder="Amazing Project" required>
+                            </div>
+                            <div class="portfolio-form-group">
+                                <label>Description *</label>
+                                <textarea class="portfolio-project-desc" placeholder="Describe what you built, technologies used, and impact..." rows="3" required></textarea>
+                            </div>
+                            <div class="portfolio-form-group">
+                                <label>Project Image URL (optional)</label>
+                                <input type="url" class="portfolio-project-image" placeholder="https://...">
+                            </div>
+                            <div class="portfolio-form-group">
+                                <label>Live Link / Demo</label>
+                                <input type="url" class="portfolio-project-link" placeholder="https://...">
+                            </div>
+                            <div class="portfolio-form-group">
+                                <label>GitHub / Source Code</label>
+                                <input type="url" class="portfolio-project-github" placeholder="https://github.com/...">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="portfolio-add-more-btn" onclick="addPortfolioProjectField()">+ Add Another Project</button>
+                </div>
+
+                <!-- Step 5: Certificates & Education -->
+                <div class="portfolio-form-step" data-step="5">
+                    <h2>Certificates & Education</h2>
+                    <p class="portfolio-step-subtitle">Add your certifications and qualifications</p>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Add Certificate/Degree</label>
+                        <div class="portfolio-skills-input-container">
+                            <input type="text" id="portfolioCertName" placeholder="Certificate/Degree Name">
+                            <input type="text" id="portfolioCertIssuer" placeholder="Issuing Organization">
+                        </div>
+                        <div class="portfolio-form-group">
+                            <label>Certificate Image (Optional)</label>
+                            <input type="file" id="portfolioCertImage" accept="image/*" class="portfolio-file-input">
+                            <small class="portfolio-help-text">Upload your certificate image (JPG, PNG, etc.)</small>
+                        </div>
+                        <button type="button" class="portfolio-add-btn" onclick="addPortfolioCertificate()">Add Certificate</button>
+                        <div class="portfolio-item-list" id="portfolioCertsList"></div>
+                    </div>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Education</label>
+                        <input type="text" id="portfolioEducation" placeholder="e.g., B.S. in Computer Science - MIT (2020)">
+                    </div>
+                </div>
+
+                <!-- Step 6: Work Experience -->
+                <div class="portfolio-form-step" data-step="6">
+                    <h2>Work Experience</h2>
+                    <p class="portfolio-step-subtitle">Add your professional experience</p>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Add Work Experience</label>
+                        <div class="portfolio-skills-input-container">
+                            <input type="text" id="portfolioWorkTitle" placeholder="Job Title" style="flex: 1;">
+                            <input type="text" id="portfolioWorkCompany" placeholder="Company" style="flex: 1;">
+                            <button type="button" class="portfolio-add-btn" onclick="addPortfolioWork()">Add</button>
+                        </div>
+                        <textarea id="portfolioWorkDesc" placeholder="Brief description of your role and achievements..." rows="2" style="margin-top: 10px;"></textarea>
+                        <div class="portfolio-item-list" id="portfolioWorkList"></div>
+                    </div>
+                </div>
+
+                <!-- Step 7: Contact & Social -->
+                <div class="portfolio-form-step" data-step="7">
+                    <h2>Contact & Social Links</h2>
+                    <p class="portfolio-step-subtitle">How can people reach you?</p>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="portfolioPhone" placeholder="+1 234 567 8900">
+                    </div>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Location</label>
+                        <input type="text" id="portfolioLocation" placeholder="City, Country">
+                    </div>
+                    
+                    <div class="portfolio-form-group">
+                        <label>LinkedIn</label>
+                        <input type="url" id="portfolioLinkedin" placeholder="https://linkedin.com/in/yourprofile">
+                    </div>
+                    
+                    <div class="portfolio-form-group">
+                        <label>GitHub</label>
+                        <input type="url" id="portfolioGithub" placeholder="https://github.com/yourusername">
+                    </div>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Portfolio Website</label>
+                        <input type="url" id="portfolioWebsite" placeholder="https://yourwebsite.com">
+                    </div>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Twitter/X</label>
+                        <input type="url" id="portfolioTwitter" placeholder="https://twitter.com/yourhandle">
+                    </div>
+                </div>
+
+                <!-- Step 8: Theme -->
+                <div class="portfolio-form-step" data-step="8">
+                    <h2>Choose Your Style</h2>
+                    <p class="portfolio-step-subtitle">Pick a color theme for your portfolio</p>
+                    
+                    <div class="portfolio-form-group">
+                        <label>Color Theme</label>
+                        <div class="portfolio-color-themes">
+                            <div class="portfolio-color-theme portfolio-theme-dark selected" onclick="selectPortfolioTheme('dark', this)"></div>
+                            <div class="portfolio-color-theme portfolio-theme-blue" onclick="selectPortfolioTheme('blue', this)"></div>
+                            <div class="portfolio-color-theme portfolio-theme-green" onclick="selectPortfolioTheme('green', this)"></div>
+                            <div class="portfolio-color-theme portfolio-theme-orange" onclick="selectPortfolioTheme('orange', this)"></div>
+                            <div class="portfolio-color-theme portfolio-theme-pink" onclick="selectPortfolioTheme('pink', this)"></div>
+                        </div>
+                        <input type="hidden" id="portfolioSelectedTheme" value="dark">
+                    </div>
+                </div>
+
+                <div class="portfolio-form-buttons">
+                    <button type="button" class="portfolio-btn portfolio-btn-prev" id="portfolioPrevBtn" style="display: none;" onclick="previousPortfolioStep()">Previous</button>
+                    <button type="button" class="portfolio-btn portfolio-btn-next" id="portfolioNextBtn" onclick="nextPortfolioStep()">Next</button>
+                    <button type="button" class="portfolio-btn portfolio-btn-create" id="portfolioCreateBtn" style="display: none;" onclick="createPortfolioFromBuilder()">Create My Portfolio</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Global Subtle Floating Elements Container -->
+    <div class="floating-container" id="globalFloating"></div>
+    
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+
+    
+    <header class="header">
+        <a href="#" class="logo">Kashish<span>.</span></a>
+        <i class='bx bx-menu' id="menu"></i>
+        <nav class="navbar">
+            <a href="#home" style="--vlr:1" class="active">Home</a>
+            <a href="#about" style="--vlr:2">About</a>
+            <a href="#education" style="--vlr:3">Education</a>
+            <a href="#certifications" style="--vlr:4">Certifications</a>
+            <a href="#skills" style="--vlr:5">Skills</a>
+            <a href="#projects" style="--vlr:6">Projects</a>
+            <a href="#contact" style="--vlr:8">Contact</a>
+        </nav>
+    </header>
+
+    
+    <section class="home" id="home">
+        <div class="section-elements" id="homeElements"></div>
+        <div class="text-content">
+            <span class="greeting">Hello, I'm</span>
+            <h1>Kashish Valecha</h1>
+            <div class="text-animation">
+                <h2 class="profession">BTech Student | AI Enthusiast | Full Stack Developer</h2>
+            </div>
+            <p>Welcome to my portfolio! I'm a second-year BTech student at Pimpri Chinchwad University, Pune, passionate about AI, web development, and building innovative solutions with cutting-edge technologies.</p>
+            <div class="btn-section">
+                <a href="#contact" class="btn">Hire Me</a>
+                <a href="#about" class="btn btn-secondary">Learn More</a>
+            </div>
+            <div class="social-media">
+                <a href="https://github.com/DigitalDreamer5" target="_blank" rel="noopener" title="GitHub"><i class='bx bxl-github'></i></a>
+                <a href="https://www.linkedin.com/in/kashish-valecha-30b193321" target="_blank" rel="noopener" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                <a href="mailto:kashishvalecha5555@gmail.com" title="Email"><i class='bx bx-envelope'></i></a>
+            </div>
+        </div>
+        <div class="image-container">
+            <img src="profile-image.png" alt="Kashish Valecha" class="profile-image">
+        </div>
+    </section>
+
+    
+    <section class="about" id="about">
+        <div class="section-elements" id="aboutElements"></div>
+        <h2 class="title">About <span>Me</span></h2>
+        <div class="about-content">
+            <div class="about-img">
+                <img src="profile-image.png" alt="Kashish Valecha">
+            </div>
+            <div class="text-content2">
+                <h3>BTech Student | AI Enthusiast | Developer-in-Progress</h3>
+                <p>I'm currently pursuing my BTech in Computer Science at Pimpri Chinchwad University, Pune. My journey in tech started with a curiosity about how applications work behind the scenes, which led me to dive deep into programming, AI technologies, and full-stack development.</p>
+                <p>I'm enthusiastic about creating user-friendly applications, exploring artificial intelligence, and solving real-world problems through technology. My goal is to blend technical skills with creative thinking to build innovative solutions that make a difference.</p>
+                
+                <div class="personal-info">
+                    <div class="info-item">
+                        <span class="info-title"><i class="fas fa-calendar"></i> Date of Birth:</span>
+                        <span class="info-detail">April 8, 2007</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title"><i class="fas fa-envelope"></i> Email:</span>
+                        <span class="info-detail">kashishvalecha5555@gmail.com</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title"><i class="fas fa-phone"></i> Phone:</span>
+                        <span class="info-detail">+91 7521885215</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title"><i class="fas fa-map-marker-alt"></i> Location:</span>
+                        <span class="info-detail">Pune, Maharashtra, India</span>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    
+    <section class="education" id="education">
+        <div class="section-elements" id="educationElements"></div>
+        <h2 class="title">My <span>Journey</span></h2>
+        <div class="education-row">
+            <div class="education-column">
+                <h3 class="education-subtitle"><i class="fas fa-graduation-cap"></i> Education</h3>
+                <div class="education-box">
+                    <div class="education-content">
+                        <div class="content">
+                            <div class="year"><i class='bx bxs-calendar'></i> 2024 - Present</div>
+                            <h3>Bachelor of Technology in Computer Science</h3>
+                            <h4>Pimpri Chinchwad University, Pune</h4>
+                            <p>Currently pursuing my degree with focus on programming, data structures, algorithms, AI technologies, and full-stack web development.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="education-content">
+                        <div class="content">
+                            <div class="year"><i class='bx bxs-calendar'></i> 2022 - 2024 </div>
+                            <h3>Higher Secondary Education</h3>
+                            <h4>St. Joseph's Shaktinagar</h4>
+                            <p>Completed HSC with focus on Physics, Chemistry, and Mathematics with 72.3% aggregate.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="education-column">
+                <h3 class="education-subtitle"><i class="fas fa-trophy"></i> Achievements</h3>
+                <div class="education-box">
+                    <div class="education-content">
+                        <div class="content">
+                            <div class="year"><i class='bx bxs-calendar'></i> 2025</div>
+                            <h3>Code Warz '25 Participant</h3>
+                            <h4>ACM TCET</h4>
+                            <p>Participated in competitive programming contest showcasing algorithmic problem-solving skills.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="education-content">
+                        <div class="content">
+                            <div class="year"><i class='bx bxs-calendar'></i> 2024</div>
+                            <h3>Adobe India Hackathon</h3>
+                            <h4>Adobe India</h4>
+                            <p>Participated in national-level hackathon, demonstrating innovative thinking and technical expertise.</p>
+                        </div>
+                    </div>
+
+                    <div class="education-content">
+                        <div class="content">
+                            <div class="year"><i class='bx bxs-calendar'></i> 2024</div>
+                            <h3>Bharat Antariksh Hackathon</h3>
+                            <h4>Innovation Recognition</h4>
+                            <p>Received innovation acknowledgment for space technology solutions and creative problem-solving approach.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data-Driven Certifications Section -->
+    <section class="certifications" id="certifications">
+        <div class="section-elements" id="certificationsElements"></div>
+        <h2 class="title">My <span>Certifications</span></h2>
+        <div class="certifications-container">
+            <!-- Categories will be dynamically generated by JavaScript -->
+        </div>
+    </section>
+
+    
+    <section class="skills" id="skills">
+        <div class="section-elements" id="skillsElements"></div>
+        <h2 class="title">My <span>Skills</span></h2>
+        <div class="skills-wrapper">
+            <div class="skills-content">
+                <h3 class="skills-title">Technical Skills</h3>
+                <div class="skills-box">
+                    <div class="skills-group">
+                        <div class="skills-data">
+                            <div class="single-skill">
+                                <span class="topic">HTML</span>
+                                <span class="percentage">90%</span>
+                            </div>
+                            <div class="bar-side"><div class="bar bar-1"></div></div>
+                        </div>
+                        
+                        <div class="skills-data">
+                            <div class="single-skill">
+                                <span class="topic">CSS</span>
+                                <span class="percentage">85%</span>
+                            </div>
+                            <div class="bar-side"><div class="bar bar-2"></div></div>
+                        </div>
+                        
+                        <div class="skills-data">
+                            <div class="single-skill">
+                                <span class="topic">JavaScript</span>
+                                <span class="percentage">80%</span>
+                            </div>
+                            <div class="bar-side"><div class="bar bar-3"></div></div>
+                        </div>
+
+                        <div class="skills-data">
+                            <div class="single-skill">
+                                <span class="topic">Python</span>
+                                <span class="percentage">85%</span>
+                            </div>
+                            <div class="bar-side"><div class="bar bar-4"></div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skills-group">
+                        <div class="skills-data">
+                            <div class="single-skill">
+                                <span class="topic">C++</span>
+                                <span class="percentage">75%</span>
+                            </div>
+                            <div class="bar-side"><div class="bar bar-5"></div></div>
+                        </div>
+
+                        <div class="skills-data">
+                            <div class="single-skill">
+                                <span class="topic">Git/GitHub</span>
+                                <span class="percentage">70%</span>
+                            </div>
+                            <div class="bar-side"><div class="bar bar-6"></div></div>
+                        </div>
+
+                        <div class="skills-data">
+                            <div class="single-skill">
+                                <span class="topic">Google Cloud Platform</span>
+                                <span class="percentage">80%</span>
+                            </div>
+                            <div class="bar-side"><div class="bar bar-7"></div></div>
+                        </div>
+
+                        <div class="skills-data">
+                            <div class="single-skill">
+                                <span class="topic">Linux/OpenShift</span>
+                                <span class="percentage">75%</span>
+                            </div>
+                            <div class="bar-side"><div class="bar bar-8"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="skills-content">
+                <h3 class="skills-title">Professional Skills</h3>
+                <div class="professional-skills">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h4>AI & Machine Learning</h4>
+                        <p>Generative AI, Prompt Design, Vertex AI, and AI application development.</p>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <h4>Cloud Computing</h4>
+                        <p>Google Cloud Platform, deployment strategies, and cloud-based solutions.</p>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h4>Problem Solving</h4>
+                        <p>Analytical approach to breaking down complex problems into manageable parts.</p>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4>Leadership & Teamwork</h4>
+                        <p>Event coordination, team management, and effective collaboration.</p>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <h4>Public Speaking</h4>
+                        <p>Anchoring events, presentations, and effective communication skills.</p>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h4>Innovation</h4>
+                        <p>Creative thinking, hackathon participation, and innovative solution development.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="projects" id="projects">
+        <div class="section-elements" id="projectsElements"></div>
+        <h2 class="title">My <span>Projects</span></h2>
+        <div class="projects-container">
+           
+            <div class="project-card">
+                <div class="project-img">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Personal Portfolio Website</h3>
+                    <p class="project-description">A responsive portfolio website built using HTML, CSS, and JavaScript to showcase my skills and projects with modern design.</p>
+                    <div class="project-tech">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-img">
+                    <i class="fas fa-music"></i>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">AI Lyrics Generator</h3>
+                    <p class="project-description">An intelligent lyrics generation system using AI/ML algorithms to create creative song lyrics based on user input and themes.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>AI/ML</span>
+                        <span>NLP</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-img">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Alumni Net</h3>
+                    <p class="project-description">A comprehensive alumni networking platform connecting graduates with current students and facilitating professional networking.</p>
+                    <div class="project-tech">
+                        <span>Web Development</span>
+                        <span>Database</span>
+                        <span>JavaScript</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-img">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">MediCorrect</h3>
+                    <p class="project-description">A medical assistance application designed to help users with health-related queries and medical information management.</p>
+                    <div class="project-tech">
+                        <span>Healthcare Tech</span>
+                        <span>Python</span>
+                        <span>UI/UX</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-img">
+                    <i class="fas fa-microphone-alt"></i>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Voice Bot - Date & Time Assistant</h3>
+                    <p class="project-description">A personalized voice-activated bot that tells current date and time with custom username recognition and voice interaction.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Voice Recognition</span>
+                        <span>Speech Processing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="more-projects">
+            <a href="https://github.com/DigitalDreamer5" target="_blank" rel="noopener" class="btn">See More Projects</a>
+        </div>
+    </section>
+
+    
+
+    
+    <section class="contact" id="contact">
+        <div class="section-elements" id="contactElements"></div>
+        <h2 class="title">Contact <span>Me</span></h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Get In Touch</h3>
+                <p>I'm interested in freelance opportunities, AI projects, and collaborations. If you have any questions or want to work together on innovative tech solutions, feel free to reach out!</p>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-details">
+                        <h4>Location</h4>
+                        <p>Pune, Maharashtra, India</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-details">
+                        <h4>Email</h4>
+                        <p>kashishvalecha5555@gmail.com</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="info-details">
+                        <h4>Phone</h4>
+                        <p>+91 7521885215</p>
+                    </div>
+                </div>
+                
+                <div class="social-links">
+                    <a href="https://github.com/DigitalDreamer5" target="_blank" rel="noopener" title="GitHub"><i class='bx bxl-github'></i></a>
+                    <a href="https://www.linkedin.com/in/kashish-valecha-30b193321" target="_blank" rel="noopener" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                    <a href="https://www.instagram.com/kashish_valecha.5" target="_blank" rel="noopener" title="Instagram"><i class='bx bxl-instagram'></i></a>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <form action="#" id="contactForm">
+                    <div class="input-box">
+                        <input type="text" name="name" required placeholder="Full Name">
+                        <input type="email" name="email" required placeholder="Email Address">
+                    </div>
+                    
+                    <div class="input-box">
+                        <input type="tel" name="phone" required placeholder="Phone Number">
+                        <input type="text" name="subject" required placeholder="Subject">
+                    </div>
+                    
+                    <textarea name="message" id="message" cols="30" rows="10" placeholder="Your Message" required></textarea>
+                    
+                    <button type="submit" class="btn">Send Message <i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="logo-col">
+                    <a href="#" class="footer-logo">Kashish<span>.</span></a>
+                    <p>A passionate BTech student and aspiring developer focused on creating innovative AI and web solutions.</p>
+                </div>
+                
+                <div class="links-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#certifications">Certifications</a></li>
+                        <li><a href="#skills">Skills</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="contact-col">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-envelope"></i> kashishvalecha5555@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +91 7521885215</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Pune, Maharashtra, India</p>
+                </div>
+                
+                <div class="newsletter-col">
+                    <h4>Subscribe</h4>
+                    <p>Subscribe to receive updates about my new projects and tech articles.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your Email" required>
+                        <button type="submit" aria-label="Subscribe"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 Kashish Valecha | e/kashi55</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/DigitalDreamer5" target="_blank" rel="noopener" title="GitHub"><i class='bx bxl-github'></i></a>
+                    <a href="https://www.linkedin.com/in/kashish-valecha-30b193321" target="_blank" rel="noopener" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                </div>
+            </div>
+        </div>
+        <a href="#home" class="scroll-top" title="Back to Top"><i class='bx bx-up-arrow-alt'></i></a>
+    </footer>
+    
+    <script src="script.js"></script>
+    
+    <!-- Fallback for 3D scene -->
+    <script>
+        // Add error handling for 3D scene loading
+        window.addEventListener('error', function(e) {
+            if (e.filename && e.filename.includes('spline')) {
+                console.warn('3D scene loading failed, hiding canvas');
+                const canvas = document.getElementById('hero3d');
+                if (canvas) {
+                    canvas.style.display = 'none';
+                }
+            }
+        });
+        
+        // Performance-based 3D scene management
+        if (navigator.connection && navigator.connection.effectiveType) {
+            const connectionType = navigator.connection.effectiveType;
+            if (connectionType === 'slow-2g' || connectionType === '2g') {
+                // Disable 3D on very slow connections
+                const canvas = document.getElementById('hero3d');
+                if (canvas) {
+                    canvas.style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
